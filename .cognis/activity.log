@@ -1,1 +1,2 @@
 2024-06-03T14:22:02  docs(output): memoize repeated lookups
+2024-07-05T09:39:09  test(detect): normalize unicode before matching
