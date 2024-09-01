@@ -3,3 +3,4 @@
 2024-07-19T16:56:16  feat: PROMETHEUS unbound
 2024-08-03T11:13:23  docs(deps): reduce false positives on edge cases
 2024-08-17T18:30:30  chore: bump dev tooling
+2024-09-01T13:47:37  style(fixtures): wire the MCP tool schema
