@@ -4,3 +4,4 @@
 2024-08-03T11:13:23  docs(deps): reduce false positives on edge cases
 2024-08-17T18:30:30  chore: bump dev tooling
 2024-09-01T13:47:37  style(fixtures): wire the MCP tool schema
+2024-10-04T08:04:44  feat(output): add a fast path for the common case
