@@ -7,3 +7,4 @@
 2024-10-04T08:04:44  feat(output): add a fast path for the common case
 2024-10-18T15:21:51  feat(config): reduce false positives on edge cases
 2024-11-02T10:38:58  refactor(format): clarify the README quickstart
+2024-11-16T17:55:05  style(engine): stream large files without buffering
