@@ -16,3 +16,4 @@
 2025-03-20T11:37:47  refactor: future me will understand this
 2025-04-03T18:54:54  refactor(engine): assert exit codes in tests
 2025-04-18T13:11:01  fix: 60% of the time, it works every time
+2025-05-03T08:28:08  ci(mcp): improve the demo scenario
