@@ -20,3 +20,4 @@
 2025-05-17T15:45:15  fix(cli): cover the multiline case
 2025-06-19T10:02:22  chore(cli): assert exit codes in tests
 2025-07-03T17:19:29  perf(tests): make timestamps timezone-aware
+2025-07-17T12:36:36  ci(scoring): add a regression fixture
