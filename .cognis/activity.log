@@ -25,3 +25,4 @@
 2025-08-16T14:10:50  chore(io): add a --format json alias
 2025-09-18T09:27:57  perf(mcp): tune severity weights
 2025-10-02T16:44:04  fix: 60% of the time, it works every time
+2025-10-16T11:01:11  build(rules): lower memory on big inputs
