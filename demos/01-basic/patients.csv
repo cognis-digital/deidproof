@@ -1,0 +1,9 @@
+patient_name,email,ssn,zip,age,sex,diagnosis
+John Smith,jsmith@example.com,123-45-6789,90210,34,M,Hypertension
+Mary Jones,mjones@example.com,234-56-7890,90210,34,F,Diabetes
+Robert Lee,rlee@example.com,345-67-8901,10001,58,M,Asthma
+Linda Park,lpark@example.com,456-78-9012,10001,58,F,Hypertension
+James King,jking@example.com,567-89-0123,60601,92,M,Cancer
+Susan Cole,scole@example.com,678-90-1234,60601,41,F,Diabetes
+David Ray,dray@example.com,789-01-2345,30303,27,M,Asthma
+Karen Fox,kfox@example.com,890-12-3456,30303,27,F,Hypertension
