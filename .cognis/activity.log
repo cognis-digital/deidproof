@@ -30,3 +30,4 @@
 2025-12-03T13:35:25  test(cache): pin the test dependencies
 2025-12-18T08:52:32  perf: micro-optimization
 2026-01-01T15:09:39  build(report): add a --quiet mode
+2026-01-15T10:26:46  docs(scan): bump the dev toolchain
