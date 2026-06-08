@@ -1,0 +1,10 @@
+{
+  "name": "@cognis/deidproof",
+  "version": "0.2.0",
+  "description": "JavaScript port of deidproof (Cognis Neural Suite)",
+  "bin": {
+    "deidproof": "index.js"
+  },
+  "license": "LicenseRef-COCL-1.0",
+  "type": "module"
+}
