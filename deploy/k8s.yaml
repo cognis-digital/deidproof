@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: deidproof, labels: { app: deidproof } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: deidproof } }
+  template:
+    metadata: { labels: { app: deidproof } }
+    spec:
+      containers:
+        - name: deidproof
+          image: ghcr.io/cognis-digital/deidproof:latest
+          ports: [{ containerPort: 8000 }]
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits: { cpu: "500m", memory: "256Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: deidproof }
+spec:
+  selector: { app: deidproof }
+  ports: [{ port: 80, targetPort: 8000 }]
