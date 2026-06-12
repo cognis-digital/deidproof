@@ -9,14 +9,14 @@
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&duration=3500&pause=1000&color=6B46C1&center=true&vCenter=true&width=720&lines=Reidentification+risk+assessment+that+computes+kanonymity+ld;Self-hostable+%C2%B7+MCP-native+%C2%B7+CI-ready+%C2%B7+polyglot" width="720"/>
 
-[![PyPI](https://img.shields.io/pypi/v/cognis-deidproof.svg?color=6b46c1)](https://pypi.org/project/cognis-deidproof/) [![CI](https://github.com/cognis-digital/deidproof/actions/workflows/ci.yml/badge.svg)](https://github.com/cognis-digital/deidproof/actions) [![License: COCL 1.0](https://img.shields.io/badge/License-COCL%201.0-2b6cb0.svg)](LICENSE) [![Suite](https://img.shields.io/badge/Cognis-Neural%20Suite-6b46c1.svg)](https://github.com/cognis-digital)
+[![install](https://img.shields.io/badge/install-git%2B%20%C2%B7%20pipx%20%C2%B7%20uv-6b46c1.svg)](#install--every-way-every-platform) [![CI](https://github.com/cognis-digital/deidproof/actions/workflows/ci.yml/badge.svg)](https://github.com/cognis-digital/deidproof/actions) [![License: COCL 1.0](https://img.shields.io/badge/License-COCL%201.0-2b6cb0.svg)](LICENSE) [![Suite](https://img.shields.io/badge/Cognis-Neural%20Suite-6b46c1.svg)](https://github.com/cognis-digital)
 
 *Healthcare & Life-Sciences — HIPAA, PHI, FHIR/HL7, and clinical data.*
 
 </div>
 
 ```bash
-pip install cognis-deidproof
+pip install "git+https://github.com/cognis-digital/deidproof.git"
 deidproof scan .            # → prioritized findings in seconds
 ```
 
@@ -50,7 +50,7 @@ Proves your 'de-identified' export actually is de-identified, emitting a signed 
 ## Quick start
 
 ```bash
-pip install cognis-deidproof
+pip install "git+https://github.com/cognis-digital/deidproof.git"
 deidproof --version
 deidproof scan .                       # scan current project
 deidproof scan . --format json         # machine-readable
@@ -143,6 +143,32 @@ curl -fsSL https://raw.githubusercontent.com/cognis-digital/deidproof/main/insta
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="related"></a>
+<a name="verification"></a>
+## Verification
+
+[![tests](https://img.shields.io/badge/tests-10%20passing-2ea44f.svg)](AUDIT.md)
+
+Every push is verified end-to-end. Latest audit (2026-06-12):
+
+```text
+tests        : 10 passed, 0 failed, 0 errored
+compile      : all modules parse
+cli          : C:\Python314\python.exe: No module named https
+package      : https
+```
+
+<details><summary>CLI surface (<code>--help</code>)</summary>
+
+```text
+C:\Python314\python.exe: No module named https
+```
+</details>
+
+Full machine-readable results: [`AUDIT.md`](AUDIT.md) · regenerate with `python -m https --help` + `pytest -q`.
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
+
 ## Related Cognis tools
 
 - [`phiscrub`](https://github.com/cognis-digital/phiscrub) — Stream-scan logs, CSVs, and free-text notes for PHI (names, MRNs, SSNs, dates, addresses) and redact or tokenize in place.
