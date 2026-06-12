@@ -12,10 +12,9 @@ from __future__ import annotations
 
 import csv
 import re
-from collections import Counter, defaultdict
+from collections import defaultdict
 from dataclasses import dataclass, field, asdict
-from datetime import date, datetime
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple
 
 TOOL_NAME = "deidproof"
 TOOL_VERSION = "1.0.0"

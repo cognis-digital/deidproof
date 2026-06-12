@@ -16,7 +16,7 @@
 </div>
 
 ```bash
-pip install cognis-deidproof
+pip install "git+https://github.com/cognis-digital/deidproof.git"
 deidproof scan .            # → prioritized findings in seconds
 ```
 
@@ -50,7 +50,7 @@ Proves your 'de-identified' export actually is de-identified, emitting a signed 
 ## Quick start
 
 ```bash
-pip install cognis-deidproof
+pip install "git+https://github.com/cognis-digital/deidproof.git"
 deidproof --version
 deidproof scan .                       # scan current project
 deidproof scan . --format json         # machine-readable
