@@ -34,3 +34,6 @@ deidproof = "deidproof.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["deidproof"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
