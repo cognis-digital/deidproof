@@ -1,6 +1,10 @@
-"""DEIDPROOF MCP server — exposes scan() as an MCP tool for Cognis.Studio."""
+"""DEIDPROOF MCP server — exposes deidproof_scan() as an MCP tool for Cognis.Studio."""
 from __future__ import annotations
-from deidproof.core import scan, to_json
+
+import json
+
+from deidproof.core import analyze_csv
+
 
 def serve() -> int:
     """Start an MCP stdio server. Requires the optional 'mcp' extra:
@@ -15,8 +19,13 @@ def serve() -> int:
 
     @app.tool()
     def deidproof_scan(target: str) -> str:
-        """Re-identification risk assessment that computes k-anonymity, l-diversity, and HIPAA Safe Harbor compliance on a dataset.. Returns JSON findings."""
-        return to_json(scan(target))
+        """Re-identification risk assessment that computes k-anonymity, l-diversity,
+        and HIPAA Safe Harbor compliance on a dataset. Returns JSON findings."""
+        try:
+            report = analyze_csv(target)
+        except (FileNotFoundError, IsADirectoryError, PermissionError, UnicodeDecodeError, ValueError) as exc:
+            return json.dumps({"error": str(exc)})
+        return json.dumps(report.to_dict(), indent=2)
 
     app.run()
     return 0

@@ -2,6 +2,7 @@
 
 import os
 import sys
+import tempfile
 
 import pytest
 
@@ -149,3 +150,65 @@ def test_cli_version(capsys):
     assert exc.value.code == 0
     out = capsys.readouterr().out
     assert TOOL_VERSION in out
+
+
+# ---------------------------------------------------------------------------
+# Hardening tests — bad input / edge cases
+# ---------------------------------------------------------------------------
+
+
+def test_cli_missing_file_exits_1(capsys):
+    """Requesting a non-existent CSV must exit 1 with a clear stderr message."""
+    rc = main(["check", "/no/such/file.csv"])
+    assert rc == 1
+    err = capsys.readouterr().err
+    assert "error:" in err
+
+
+def test_cli_multichar_delimiter_exits_1(capsys):
+    """A multi-character delimiter is not a valid CSV separator; must exit 1."""
+    rc = main(["check", DEMO, "--delimiter", "TAB"])
+    assert rc == 1
+    err = capsys.readouterr().err
+    assert "delimiter" in err.lower()
+
+
+def test_cli_negative_k_exits_1(capsys):
+    """Negative k is semantically invalid; must exit 1 with a clear message."""
+    rc = main(["check", DEMO, "-k", "-3"])
+    assert rc == 1
+    err = capsys.readouterr().err
+    assert "error:" in err
+
+
+def test_cli_zero_l_exits_1(capsys):
+    """l=0 is semantically invalid; must exit 1 with a clear message."""
+    rc = main(["check", DEMO, "--sensitive", "diagnosis", "-l", "0"])
+    assert rc == 1
+    err = capsys.readouterr().err
+    assert "error:" in err
+
+
+def test_analyze_csv_multichar_delimiter_raises():
+    """analyze_csv must raise ValueError for a multi-character delimiter."""
+    with pytest.raises(ValueError, match="delimiter"):
+        analyze_csv(DEMO, delimiter="||")
+
+
+def test_analyze_csv_non_utf8_raises():
+    """analyze_csv must propagate UnicodeDecodeError for non-UTF-8 files."""
+    with tempfile.NamedTemporaryFile(mode="wb", suffix=".csv", delete=False) as fh:
+        fh.write(b"name,age\nJos\xe9,30\n")  # Latin-1 byte in UTF-8 context
+        fpath = fh.name
+    try:
+        with pytest.raises(UnicodeDecodeError):
+            analyze_csv(fpath)
+    finally:
+        os.unlink(fpath)
+
+
+def test_mcp_server_importable():
+    """mcp_server must import without error (broken imports must not survive)."""
+    import importlib
+    mod = importlib.import_module("deidproof.mcp_server")
+    assert callable(mod.serve)

@@ -171,6 +171,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     qi = _split_cols(args.quasi_identifiers)
     sensitive = _split_cols(args.sensitive)
 
+    # Validate numeric thresholds before hitting the CSV layer.
+    if args.k is not None and args.k < 1:
+        print(f"error: -k must be a positive integer, got {args.k}", file=sys.stderr)
+        return 1
+    if args.l is not None and args.l < 1:
+        print(f"error: -l must be a positive integer, got {args.l}", file=sys.stderr)
+        return 1
+
     try:
         rep = analyze_csv(
             args.dataset,
@@ -181,7 +189,16 @@ def main(argv: Optional[List[str]] = None) -> int:
             safe_harbor=args.safe_harbor,
             delimiter=args.delimiter,
         )
-    except (FileNotFoundError, ValueError) as exc:
+    except (FileNotFoundError, IsADirectoryError, PermissionError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    except UnicodeDecodeError as exc:
+        print(
+            f"error: could not decode file as UTF-8 — {exc}",
+            file=sys.stderr,
+        )
+        return 1
+    except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 

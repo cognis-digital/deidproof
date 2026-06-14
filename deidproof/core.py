@@ -292,7 +292,7 @@ def analyze_rows(
     quasi_identifiers: Optional[Sequence[str]] = None,
     sensitive: Optional[Sequence[str]] = None,
     k: Optional[int] = None,
-    l: Optional[int] = None,
+    l: Optional[int] = None,  # noqa: E741
     safe_harbor: bool = True,
     max_samples: int = 3,
 ) -> Report:
@@ -346,16 +346,40 @@ def analyze_csv(
     quasi_identifiers: Optional[Sequence[str]] = None,
     sensitive: Optional[Sequence[str]] = None,
     k: Optional[int] = None,
-    l: Optional[int] = None,
+    l: Optional[int] = None,  # noqa: E741
     safe_harbor: bool = True,
     delimiter: str = ",",
     max_samples: int = 3,
 ) -> Report:
-    """Parse a CSV file and run the full analysis."""
-    with open(path, "r", newline="", encoding="utf-8-sig") as fh:
-        reader = csv.DictReader(fh, delimiter=delimiter)
-        columns = list(reader.fieldnames or [])
-        rows = [dict(r) for r in reader]
+    """Parse a CSV file and run the full analysis.
+
+    Raises
+    ------
+    FileNotFoundError
+        If *path* does not exist.
+    IsADirectoryError
+        If *path* is a directory, not a file.
+    PermissionError
+        If the process lacks read permission for *path*.
+    UnicodeDecodeError
+        If the file is not UTF-8 (or UTF-8-with-BOM) encoded.
+    ValueError
+        If *delimiter* is not a single character, or if a requested
+        quasi-identifier / sensitive column is absent from the dataset.
+    """
+    if len(delimiter) != 1:
+        raise ValueError(
+            f"delimiter must be a single character, got {delimiter!r} "
+            f"(length {len(delimiter)})"
+        )
+
+    try:
+        with open(path, "r", newline="", encoding="utf-8-sig") as fh:
+            reader = csv.DictReader(fh, delimiter=delimiter)
+            columns = list(reader.fieldnames or [])
+            rows = [dict(r) for r in reader]
+    except IsADirectoryError:
+        raise IsADirectoryError(f"expected a CSV file but got a directory: {path!r}")
 
     _validate_columns(columns, quasi_identifiers, "quasi-identifier")
     _validate_columns(columns, sensitive, "sensitive")
