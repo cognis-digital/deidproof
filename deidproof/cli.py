@@ -95,9 +95,9 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     c.add_argument(
         "--format",
-        choices=["table", "json"],
+        choices=["table", "json", "sarif"],
         default="table",
-        help="Output format (default: table).",
+        help="Output format: table, json, or sarif (SARIF 2.1.0). Default: table.",
     )
     return p
 
@@ -187,6 +187,10 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     if args.format == "json":
         print(_report_to_json(rep))
+    elif args.format == "sarif":
+        from .sarif import report_to_sarif
+
+        print(json.dumps(report_to_sarif(rep, dataset=args.dataset), indent=2))
     else:
         print(_render_table(rep))
 

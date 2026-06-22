@@ -1,0 +1,9 @@
+region,age_band,sex,diagnosis_group
+West,30-39,F,Endocrine
+West,30-39,F,Respiratory
+West,30-39,M,Cardiovascular
+West,30-39,M,Endocrine
+West,40-49,F,Respiratory
+West,40-49,F,Cardiovascular
+West,40-49,M,Endocrine
+West,40-49,M,Respiratory

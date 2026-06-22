@@ -1,0 +1,9 @@
+subject_id,site,enroll_date,zip,age,sex,arm,adverse_event
+SUBJ-001,Site-A,2025-01-07,02115,64,M,Treatment,None
+SUBJ-002,Site-A,2025-01-09,02115,64,F,Placebo,Headache
+SUBJ-003,Site-B,2025-01-12,94110,58,M,Treatment,Nausea
+SUBJ-004,Site-B,2025-01-12,94110,58,F,Placebo,None
+SUBJ-005,Site-A,2025-01-15,02115,71,M,Treatment,Fatigue
+SUBJ-006,Site-C,2025-01-18,77004,90,F,Placebo,Dizziness
+SUBJ-007,Site-C,2025-01-20,77004,45,M,Treatment,None
+SUBJ-008,Site-B,2025-01-22,94110,58,M,Placebo,Rash

@@ -36,7 +36,7 @@
 
 pip install cognis-deidproof
 
-deidproof scan .            # → prioritized findings in seconds
+deidproof check export.csv --qi zip,age,sex --sensitive diagnosis -k 5 -l 2
 
 ```
 
@@ -133,11 +133,14 @@ pip install cognis-deidproof
 
 deidproof --version
 
-deidproof scan .                       # scan current project
+# k-anonymity + l-diversity + HIPAA Safe Harbor on a CSV export
+deidproof check export.csv --qi zip,age,sex --sensitive diagnosis -k 5 -l 2
 
-deidproof scan . --format json         # machine-readable
+deidproof check export.csv --qi zip,age,sex --format json    # machine-readable
 
-deidproof scan . --fail-on high        # CI gate (non-zero exit)
+deidproof check export.csv --qi zip,age,sex --format sarif    # SARIF 2.1.0
+
+deidproof check export.csv --qi zip,age,sex -k 5 || exit 1    # CI gate (exit 2 on fail)
 
 ```
 
@@ -155,17 +158,52 @@ deidproof scan . --fail-on high        # CI gate (non-zero exit)
 
 ```text
 
-$ deidproof scan .
+$ deidproof check demos/01-basic/patients.csv --qi zip,age,sex --sensitive diagnosis -k 2 -l 2
 
-  [HIGH    ] DEI-001  example finding             (./src/app.py)
+DEIDPROOF 1.0.0 - de-identification report
+========================================================
+Rows analyzed        : 8
+Quasi-identifiers    : zip, age, sex
+Sensitive attributes : diagnosis
 
-  [MEDIUM  ] DEI-002  another signal              (./config.yaml)
+k-anonymity  : k = 1  [FAIL < 2]
+l-diversity  : l = 1  [FAIL < 2]
 
+Safe Harbor  : 5 finding(s)  [FAIL]
+    S1 Name: column 'patient_name' - ...
+    S6 Email address: column 'email' - ...
+    S7 Social Security number: column 'ssn' - ...
 
-
-  2 findings · risk score 5 · 38ms
+OVERALL: FAIL          # exit code 2
 
 ```
+
+### Demos — real-use scenarios
+
+Each folder under [`demos/`](demos/) ships a realistic input file plus a
+`SCENARIO.md` (where the data came from, the exact command, what to expect, how
+to act):
+
+| Demo | What it shows |
+|---|---|
+| [`01-basic`](demos/01-basic/) | Bad "de-identified" export — all three checks fail |
+| [`02-clean`](demos/02-clean/) | Properly generalized export — `OVERALL: PASS` |
+| [`03-mixed`](demos/03-mixed/) | **SARIF 2.1.0** export for code-scanning / CI |
+| [`04-safe-harbor-leak`](demos/04-safe-harbor-leak/) | ED export leaking MRN, phone, email, dates |
+| [`05-generalized-pass`](demos/05-generalized-pass/) | Registry release that passes `k=2`/`l=2` |
+| [`06-l-diversity-gap`](demos/06-l-diversity-gap/) | k passes but l fails — the homogeneity attack |
+| [`07-clinical-trial`](demos/07-clinical-trial/) | Small-N trial listing — unique on `(zip,age,sex)` |
+| [`08-claims-export`](demos/08-claims-export/) | Payer claims with member/account IDs + ICD-10 |
+| [`09-genomics-biobank`](demos/09-genomics-biobank/) | Biobank manifest leaking URL, IP, device serial |
+| [`10-tsv-research-extract`](demos/10-tsv-research-extract/) | Tab-separated input via `--delimiter` |
+
+### SARIF 2.1.0 output
+
+`--format sarif` emits an OASIS **SARIF 2.1.0** log: a `deidproof` tool driver
+with one reporting descriptor per HIPAA Safe Harbor category (`S1`–`S18`) plus
+`DEID-K` / `DEID-L`, and one `error`-level result per finding (including failed
+k-anonymity and l-diversity thresholds). Upload it with GitHub's `upload-sarif`
+action to surface re-identification risk inline on pull requests.
 
 
 

@@ -1,0 +1,13 @@
+zip3,age_band,sex,hiv_status
+100,30-39,M,Positive
+100,30-39,M,Positive
+100,30-39,M,Positive
+100,30-39,F,Negative
+100,30-39,F,Positive
+100,30-39,F,Negative
+200,40-49,M,Negative
+200,40-49,M,Positive
+200,40-49,M,Negative
+200,40-49,F,Positive
+200,40-49,F,Negative
+200,40-49,F,Positive

@@ -1,0 +1,7 @@
+mrn,patient_name,phone,email,admit_date,zip,age,sex,chief_complaint
+A0098127,Maria Gonzalez,(312) 555-0142,mgonzalez@example.org,03/14/2025,60614,47,F,Chest pain
+A0098128,Daniel O'Brien,312-555-0188,dobrien@example.org,03/14/2025,60614,47,M,Shortness of breath
+A0098129,Aisha Rahman,(773) 555-0110,arahman@example.org,03/15/2025,60647,33,F,Abdominal pain
+A0098130,Kevin Walsh,773.555.0177,kwalsh@example.org,03/15/2025,60647,33,M,Laceration
+A0098131,Grace Liu,(312) 555-0199,gliu@example.org,03/16/2025,60614,91,F,Syncope
+A0098132,Thomas Reed,312-555-0123,treed@example.org,03/16/2025,60601,52,M,Palpitations

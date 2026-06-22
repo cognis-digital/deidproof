@@ -1,0 +1,7 @@
+sample_barcode,participant_url,sequencer_serial,upload_ip,collection_date,zip3,age,ancestry
+BBK-2025-0001,https://portal.example.org/p/8841,SEQ-NB551234,10.4.18.22,2025-03-01,021,42,European
+BBK-2025-0002,https://portal.example.org/p/8842,SEQ-NB551234,10.4.18.22,2025-03-01,021,42,European
+BBK-2025-0003,https://portal.example.org/p/8843,SEQ-NB551235,10.4.18.23,2025-03-02,606,67,African
+BBK-2025-0004,https://portal.example.org/p/8844,SEQ-NB551235,10.4.18.23,2025-03-02,606,67,African
+BBK-2025-0005,https://portal.example.org/p/8845,SEQ-NB551236,10.4.18.24,2025-03-03,941,91,Asian
+BBK-2025-0006,https://portal.example.org/p/8846,SEQ-NB551236,10.4.18.24,2025-03-03,941,55,European
