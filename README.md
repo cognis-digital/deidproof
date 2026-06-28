@@ -42,6 +42,81 @@ deidproof check export.csv --qi zip,age,sex --sensitive diagnosis -k 5 -l 2
 
 
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ deidproof-emit --version
+deidproof 1.0.0
+```
+
+```console
+$ deidproof-emit --help
+usage: deidproof [-h] [--version] COMMAND ...
+
+DEIDPROOF - prove a de-identified healthcare export actually is. Computes k-anonymity, l-diversity, and HIPAA Safe Harbor checks.
+
+positional arguments:
+  COMMAND
+    check     Analyze a CSV dataset for re-identification risk.
+
+options:
+  -h, --help  show this help message and exit
+  --version   show program's version number and exit
+
+Command-line interface for DEIDPROOF.
+
+Examples
+--------
+  # k-anonymity + l-diversity + Safe Harbor on a CSV export
+  deidproof check export.csv \
+      --quasi-identifiers zip,age,sex \
+      --sensitive diagnosis \
+      -k 5 -l 2
+
+  # JSON for CI pipelines (exits non-zero if de-identification fails)
+  deidproof check export.csv --qi zip,age --sensitive dx -k 5 --format json
+
+  # Safe Harbor scan only
+  deidproof check export.csv --no-k --format table
+
+Exit codes:
+  0  dataset passes all requested checks
+  2  dataset FAILS a privacy check (k/l threshold or Safe Harbor finding)
+  1  usage / runtime error
+```
+
+> Blocks above are real `deidproof` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"findings": [
+    {
+        "id": "1234567890",
+        "title": "Suspicious Network Traffic",
+        "description": "Potential malicious activity detected on network interface 192.168.1.100",
+        "indicator": {
+            "type": "ip-dns",
+            "value": "example.com"
+        },
+        "threats": [
+            {
+                "name": "Malware X",
+                "description": "A highly advanced and stealthy malware variant"
+            }
+        ]
+    }
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 1. **Install** the CLI:

@@ -1,0 +1,34 @@
+$ deidproof-emit --help
+
+usage: deidproof [-h] [--version] COMMAND ...
+
+DEIDPROOF - prove a de-identified healthcare export actually is. Computes k-anonymity, l-diversity, and HIPAA Safe Harbor checks.
+
+positional arguments:
+  COMMAND
+    check     Analyze a CSV dataset for re-identification risk.
+
+options:
+  -h, --help  show this help message and exit
+  --version   show program's version number and exit
+
+Command-line interface for DEIDPROOF.
+
+Examples
+--------
+  # k-anonymity + l-diversity + Safe Harbor on a CSV export
+  deidproof check export.csv \
+      --quasi-identifiers zip,age,sex \
+      --sensitive diagnosis \
+      -k 5 -l 2
+
+  # JSON for CI pipelines (exits non-zero if de-identification fails)
+  deidproof check export.csv --qi zip,age --sensitive dx -k 5 --format json
+
+  # Safe Harbor scan only
+  deidproof check export.csv --no-k --format table
+
+Exit codes:
+  0  dataset passes all requested checks
+  2  dataset FAILS a privacy check (k/l threshold or Safe Harbor finding)
+  1  usage / runtime error

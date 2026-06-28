@@ -1,0 +1,3 @@
+$ deidproof-emit --version
+
+deidproof 1.0.0
