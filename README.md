@@ -44,6 +44,15 @@ deidproof check export.csv --qi zip,age,sex --sensitive diagnosis -k 5 -l 2
 
 
 <!-- cognis:example:start -->
+
+## Watch the walkthrough
+
+A full narrated tour — setup, the tool in action, and every demo scenario:
+
+[![Watch the deidproof walkthrough](media/walkthrough-thumb.png)](https://github.com/cognis-digital/deidproof/releases/download/walkthrough-v1/walkthrough.mp4)
+
+▶ **[Watch the walkthrough (MP4)](https://github.com/cognis-digital/deidproof/releases/download/walkthrough-v1/walkthrough.mp4)**
+
 ## 🔎 Example output
 
 Real, reproducible output from the tool — runs offline:
