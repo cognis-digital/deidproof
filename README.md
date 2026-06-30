@@ -294,9 +294,18 @@ action to surface re-identification risk inline on pull requests.
 
 ```mermaid
 flowchart LR
-  IN[sources] --> P[deidproof<br/>curate + validate]
-  P --> OUT[query / analysis]
+  src[CSV / TSV export] --> parse[analyze_csv]
+  parse --> k[k-anonymity]
+  parse --> l[l-diversity]
+  parse --> sh[Safe Harbor<br/>18 HIPAA categories]
+  k --> rep[(Report)]
+  l --> rep
+  sh --> rep
+  rep --> out[table · JSON · SARIF 2.1.0<br/>exit 0 pass / 2 fail]
 ```
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full pipeline, the
+`Report` data model, and the SARIF mapping.
 
 
 
