@@ -49,6 +49,9 @@ SAFE_HARBOR_IDENTIFIERS: List[Dict[str, str]] = [
 
 # Value-level regexes (applied to individual cell strings).
 _SSN_RE = re.compile(r"^\s*\d{3}-\d{2}-\d{4}\s*$")
+# SSN embedded anywhere in free text (the 3-2-4 dashed shape is distinct from a
+# phone number, so a bounded search is safe and catches SSNs buried in notes).
+_SSN_SEARCH_RE = re.compile(r"(?<!\d)\d{3}-\d{2}-\d{4}(?!\d)")
 _PHONE_RE = re.compile(
     r"(?<!\d)(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}(?!\d)"
 )
@@ -201,7 +204,7 @@ def _value_matches(value: str) -> List[str]:
     v = value.strip()
     if not v:
         return hits
-    if _SSN_RE.match(v):
+    if _SSN_RE.match(v) or _SSN_SEARCH_RE.search(v):
         hits.append("S7")
     if _EMAIL_RE.search(v):
         hits.append("S6")
@@ -218,9 +221,14 @@ def _value_matches(value: str) -> List[str]:
     if _DATE_TOKEN_RE.search(v):
         hits.append("S3")
     # Age over 89 (Safe Harbor requires aggregating ages >89 into 90+).
-    if re.fullmatch(r"\d{1,3}", v):
+    # Guard against false positives: only a plausible *human age* (90..=125)
+    # is flagged. A bare 3-digit code/count/dosage such as "200" is not an age,
+    # and flagging it as S3 would be noise. The oldest verified human age is 122,
+    # so 125 is a safe, generous ceiling.
+    if "S3" not in hits and re.fullmatch(r"\d{1,3}", v):
         try:
-            if int(v) > 89:
+            n = int(v)
+            if 90 <= n <= 125:
                 hits.append("S3")
         except ValueError:
             pass
@@ -352,11 +360,32 @@ def analyze_csv(
     delimiter: str = ",",
     max_samples: int = 3,
 ) -> Report:
-    """Parse a CSV file and run the full analysis."""
+    """Parse a CSV file and run the full analysis.
+
+    Raises
+    ------
+    FileNotFoundError
+        If ``path`` does not exist.
+    IsADirectoryError
+        If ``path`` is a directory rather than a file.
+    ValueError
+        If ``delimiter`` is not a single character, the file has no header row,
+        or a requested quasi-identifier / sensitive column is absent.
+    """
+    if len(delimiter) != 1:
+        raise ValueError(
+            f"delimiter must be a single character, got {delimiter!r}. "
+            r"To use a tab, pass an actual tab or the two-character token '\t'."
+        )
     with open(path, "r", newline="", encoding="utf-8-sig") as fh:
         reader = csv.DictReader(fh, delimiter=delimiter)
         columns = list(reader.fieldnames or [])
         rows = [dict(r) for r in reader]
+
+    if not columns:
+        raise ValueError(
+            f"dataset {path!r} has no header row (the file appears to be empty)."
+        )
 
     _validate_columns(columns, quasi_identifiers, "quasi-identifier")
     _validate_columns(columns, sensitive, "sensitive")

@@ -36,6 +36,19 @@ def _split_cols(value: Optional[str]) -> List[str]:
     return [c.strip() for c in value.split(",") if c.strip()]
 
 
+# Common shell-escaped delimiter tokens users type literally (e.g. --delimiter '\t').
+_DELIMITER_ESCAPES = {r"\t": "\t", r"\\t": "\t", "tab": "\t", "TAB": "\t"}
+
+
+def _resolve_delimiter(value: str) -> str:
+    """Translate a literal escape token like ``\\t`` into the real character.
+
+    argparse hands us the string exactly as typed; a user who writes
+    ``--delimiter '\\t'`` means a tab, not a backslash followed by a 't'.
+    """
+    return _DELIMITER_ESCAPES.get(value, value)
+
+
 def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog=TOOL_NAME,
@@ -171,6 +184,26 @@ def main(argv: Optional[List[str]] = None) -> int:
     qi = _split_cols(args.quasi_identifiers)
     sensitive = _split_cols(args.sensitive)
 
+    if args.k is not None and args.k < 1:
+        print("error: -k must be a positive integer", file=sys.stderr)
+        return 1
+    if args.l is not None and args.l < 1:
+        print("error: -l must be a positive integer", file=sys.stderr)
+        return 1
+    if args.l is not None and not sensitive:
+        print(
+            "error: -l requires --sensitive to name at least one column",
+            file=sys.stderr,
+        )
+        return 1
+    if (args.k is not None or args.l is not None) and not qi:
+        print(
+            "error: -k/-l require --quasi-identifiers to name at least one "
+            "column (otherwise the check would silently pass)",
+            file=sys.stderr,
+        )
+        return 1
+
     try:
         rep = analyze_csv(
             args.dataset,
@@ -179,10 +212,13 @@ def main(argv: Optional[List[str]] = None) -> int:
             k=args.k,
             l=args.l,
             safe_harbor=args.safe_harbor,
-            delimiter=args.delimiter,
+            delimiter=_resolve_delimiter(args.delimiter),
         )
-    except (FileNotFoundError, ValueError) as exc:
+    except (FileNotFoundError, IsADirectoryError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
+        return 1
+    except OSError as exc:
+        print(f"error: cannot read dataset: {exc}", file=sys.stderr)
         return 1
 
     if args.format == "json":
