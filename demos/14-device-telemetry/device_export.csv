@@ -1,0 +1,5 @@
+device_serial,imei,upload_ip,age_band,sex,reading
+DEV-77120,352099001761481,10.0.0.5,60-69,M,normal
+DEV-77121,352099001761482,10.0.0.6,60-69,M,elevated
+DEV-77122,352099001761483,10.0.0.7,60-69,F,normal
+DEV-77123,352099001761484,10.0.0.8,60-69,F,elevated

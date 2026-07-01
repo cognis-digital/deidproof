@@ -1,0 +1,7 @@
+note_id,age_band,sex,visit_reason,note
+N-001,30-39,F,follow-up,"Patient stable. Call the clinic at 312-555-0142 if symptoms recur."
+N-002,30-39,M,follow-up,"Discharged home. Follow-up labs emailed to jdoe@example.org."
+N-003,40-49,F,consult,"Reviewed prior imaging; see report at https://records.example.org/r/771."
+N-004,40-49,M,consult,"No acute findings. Portal login recorded from 203.0.113.44."
+N-005,30-39,F,follow-up,"Reassured. No medication changes."
+N-006,40-49,M,consult,"Referred to cardiology. SSN on intake form 123-45-6789 to be redacted."
